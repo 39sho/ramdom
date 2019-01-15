@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <form name="inputs">
+    <input type="text" placeholder="ラズパイの個数" name="num">
+    <input type="text" placeholder="抽選の参加人数" name="men">
+    <input type="button" value="抽選" onclick="start();">
+  </form>
+  <img src="image/loader.gif" style="display: none;">
+  <span id="winner"></span>
+  <script>
+    function start() {
+      var form = document.forms.inputs;
+      var num = parseInt(form.num.value);
+      var men = parseInt(form.men.value);
+      console.log(num, men);
+      alert(`ラズパイ：${num}、参加者：${men}で抽選を開始します。よろしいですか？`);
+
+      var winner = Array(num);
+      var men_array = [...Array(men).keys()];
+      for (var i = men_array.length - 1; i >= 0; i--) {
+        men_array[i] += 1;
+      }
+
+      for (var i = winner.length - 1; i >= 0; i--) {
+        while(men_array[i]) {
+          var rand = Math.floor(Math.random () * men);
+          winner[i] = men_array[rand];
+          men_array.splice(rand, 1);
+        }
+      }
+
+      var e = document.getElementById('winner');
+      var e = document.querySelector('img');
+      e.style.display = 'block';
+      setTimeout(() => {
+        for (var i = winner.length - 1; i >= 0; i--) {
+          alert(`当選者：${winner[i]}`);
+        }
+      }, 6000);
+      setTimeout(() => {
+        e.style.display = 'none';
+      }, 5000);
+      
+    }
+    
+  </script>
+</body>
+</html>
